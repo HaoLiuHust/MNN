@@ -1,4 +1,6 @@
 import os
+import sys
+major_py_ver = sys.version_info.major
 
 def convert_string_to_hex_list(code_str):
     hex_list = []
@@ -54,7 +56,11 @@ def opencl_codegen():
     opencl_source_map += "namespace MNN { \n"
     opencl_source_map += "extern const std::map<std::string, std::vector<unsigned char>> OpenCLProgramMap = \n { \n"
 
-    for file_name, file_source in opencl_code_maps.iteritems():
+    if major_py_ver == 2:
+        items = opencl_code_maps.iteritems()
+    else:
+        items = opencl_code_maps.items()
+    for file_name, file_source in items:
         opencl_source_map += "{\n \""
         opencl_source_map += file_name
         opencl_source_map += "\", \n"

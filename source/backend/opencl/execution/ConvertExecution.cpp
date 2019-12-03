@@ -49,7 +49,12 @@ namespace MNN {
             
             mKernel.setArg(idx++, openCLImage(input));
             mKernel.setArg(idx++, openCLImage(output));
+                        
+            auto runtime                    = mOpenCLBackend->getOpenCLRuntime();
+            mGlobalWorkSize = {static_cast<uint32_t>(channelBlocks), static_cast<uint32_t>(width),
+                static_cast<uint32_t>(height * batch)};
             
+            mLocalWorkSize = localWS3DDefault(gws, mMaxWorkGroupSize, mOpenCLBackend->getOpenCLRuntime());
             return NO_ERROR;
         }
         
@@ -57,25 +62,10 @@ namespace MNN {
 #ifdef LOG_VERBOSE
             MNN_PRINT("Start ConvertExecution onExecute... \n");
 #endif
-            Tensor* input  = inputs[0];
-            Tensor* output = outputs[0];
+            auto input = inputs[0];
+            auto output = outputs[0];
             
-            std::vector<int> inputShape  = tensorShapeFormat(input);
-            std::vector<int> outputShape = tensorShapeFormat(output);
-            
-            const int batch    = inputShape.at(0);
-            const int height   = inputShape.at(1);
-            const int width    = inputShape.at(2);
-            const int channels = inputShape.at(3);
-            
-            const int channelBlocks = UP_DIV(channels, 4);
-            
-            auto runtime                    = mOpenCLBackend->getOpenCLRuntime();
-            const std::vector<uint32_t> gws = {static_cast<uint32_t>(channelBlocks), static_cast<uint32_t>(width),
-                static_cast<uint32_t>(height * batch)};
-            
-            const std::vector<uint32_t> lws = localWS3DDefault(gws, mMaxWorkGroupSize, mOpenCLBackend->getOpenCLRuntime());
-            run3DKernelDefault(mKernel, gws, lws, mOpenCLBackend->getOpenCLRuntime());
+            run3DKernelDefault(mKernel, mGlobalWorkSize, mLocalWorkSize, mOpenCLBackend->getOpenCLRuntime());
             
 #ifdef LOG_VERBOSE
             MNN_PRINT("End ConvertExecution onExecute... \n");
@@ -83,8 +73,21 @@ namespace MNN {
             return NO_ERROR;
         }
         
-        OpenCLCreatorRegister<TypedCreator<ConvertExecution>> __ConvertExecution(OpType_ConvertTensor);
-        OpenCLCreatorRegister<TypedCreator<ConvertExecution>> __SqueezeExecution(OpType_Squeeze);
+        class ConvertCreator : public OpenCLBackend::Creator {
+        public:
+            virtual ~ConvertCreator() = default;
+            virtual Execution *onCreate(const std::vector<Tensor *> &inputs, const std::vector<Tensor *> &outputs,
+                                        const MNN::Op *op, Backend *backend) const override {
+                if(inputs[0]->dimensions() == 3 || outputs[0]->dimensions() == 3){
+                    MNN_PRINT("convert not support dimensions == 3 \n");
+                    return nullptr;
+                }
+                return new ConvertExecution(inputs, op, backend);
+            }
+        };
+
+        OpenCLCreatorRegister<ConvertCreator> __ConvertExecution(OpType_ConvertTensor);
+        OpenCLCreatorRegister<ConvertCreator> __SqueezeExecution(OpType_Squeeze);
 
     } // namespace OpenCL
 } // namespace MNN

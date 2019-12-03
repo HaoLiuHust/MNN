@@ -7,6 +7,7 @@
 //
 
 #include "execution/DeconvExecution.hpp"
+#include "execution/MultiInputDeconvExecution.hpp"
 #include "Macro.h"
 #include "TensorUtils.hpp"
 #include "core/OpenCLBackend.hpp"
@@ -218,7 +219,19 @@ ErrorCode DeconvExecution::onExecute(const std::vector<Tensor *> &inputs, const 
     return NO_ERROR;
 }
 
-OpenCLCreatorRegister<TypedCreator<DeconvExecution>> __deconv_op(OpType_Deconvolution);
+class DeconvolutionCreator : public OpenCLBackend::Creator {
+public:
+    virtual ~DeconvolutionCreator() = default;
+    virtual Execution *onCreate(const std::vector<Tensor *> &inputs, const std::vector<Tensor *> &outputs,
+                                const MNN::Op *op, Backend *backend) const override {
+        if (inputs.size() == 3) {
+            return new MultiInputDeconvExecution(op, backend);
+        }
+        return new DeconvExecution(inputs, op, backend);
+    }
+};
+
+OpenCLCreatorRegister<DeconvolutionCreator> __deconv_op(OpType_Deconvolution);
 
 } // namespace OpenCL
 } // namespace MNN

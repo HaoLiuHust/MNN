@@ -35,6 +35,8 @@ namespace MNN {
             cl::Kernel mKernel;
             uint32_t mMaxWorkGroupSize;
             OpenCLBackend *mOpenCLBackend;
+            std::vector<uint32_t> mGlobalWorkSize{1, 1, 1};
+            std::vector<uint32_t> mLocalWorkSize{1, 1, 1, 1};
         };
         
     } // namespace OpenCL

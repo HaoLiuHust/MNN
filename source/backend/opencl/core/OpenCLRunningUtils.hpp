@@ -11,6 +11,7 @@
 
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "Macro.h"
 #include "TensorUtils.hpp"
@@ -87,13 +88,14 @@ void getImageShape(const std::vector<int> &shape, /* NHWC */
 std::vector<uint32_t> turnLocalSize(cl::Kernel *kernel, std::vector<uint32_t> &gws, OpenCLRuntime *runtime);
 
 void run3DKernelDefault(const ::cl::Kernel &kernel, const std::vector<uint32_t> &gws, const std::vector<uint32_t> &lws,
-                        OpenCLRuntime *runtime);
+                        OpenCLRuntime *runtime, cl::Event* eventPtr = nullptr);
 
 void run2DKernelDefault(const ::cl::Kernel &kernel, const uint32_t *gws, const std::vector<uint32_t> &lws,
                         OpenCLRuntime *runtime);
 
 void runKernel2D(const ::cl::Kernel &kernel, const std::vector<uint32_t> &gws, const std::vector<uint32_t> &lws,
-                 OpenCLRuntime *runtime);
+                 OpenCLRuntime *runtime, cl::Event* eventPtr = nullptr);
+
 void runTurnKernelLWS2D(const ::cl::Kernel &kernel, const std::vector<uint32_t> &gws, const std::vector<uint32_t> &lws,
                         OpenCLRuntime *runtime);
 

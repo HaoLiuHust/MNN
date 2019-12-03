@@ -164,15 +164,31 @@ public:
             MNN_PRINT("softmax not support dimensions == 3 \n");
             return nullptr;
         }
-        auto axis = op->main_as_Axis()->axis();
-        if (-1 == axis) {
-            axis = inputs[0]->dimensions() - 1;
+        auto dimType = inputs[0]->getDimensionType();
+        if (dimType == Tensor::TENSORFLOW && inputs[0]->dimensions() == 4) {
+            int index[4] = {0, 2, 3, 1};
+            auto axis = op->main_as_Axis()->axis();
+            if (axis < 0) {
+                axis = inputs[0]->dimensions() + axis;
+            }
+            
+            axis = index[axis];
+            //1 : channel //2 : height
+            if (1 == axis || 2 == axis) {
+                return new SoftmaxExecution(inputs, axis, backend);
+            }
+            return nullptr;
+        } else {
+            auto axis = op->main_as_Axis()->axis();
+            if (axis < 0) {
+                axis = inputs[0]->dimensions() + axis;
+            }
+            
+            if (1 == axis || 2 == axis) {
+                return new SoftmaxExecution(inputs, axis, backend);
+            }
+            return nullptr;
         }
-        
-        if (1 == axis || 2 == axis) {
-            return new SoftmaxExecution(inputs, axis, backend);
-        }
-        return nullptr;
     }
 };
 OpenCLCreatorRegister<SoftmaxCreator> __Softmax_op(OpType_Softmax);

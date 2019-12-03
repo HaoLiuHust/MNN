@@ -8,6 +8,7 @@
 
 #include "execution/ConvExecution.hpp"
 #include "ConvWinograd.hpp"
+#include "MultiInputConvExecution.hpp"
 #include "ConvolutionIntFactory.hpp"
 #include "Macro.h"
 #include "TensorUtils.hpp"
@@ -371,6 +372,9 @@ ErrorCode ConvExecution::onResize(const std::vector<Tensor *> &inputs, const std
     int kernelHeight = mConv2dCommonParams->kernelY();
     int kernelWidth  = mConv2dCommonParams->kernelX();
 
+    mPaddings[0] = std::max(mPaddings[0], 0);
+    mPaddings[1] = std::max(mPaddings[1], 0);
+
     if (kernelHeight == kernelWidth && kernelHeight == 1 && mPaddings[0] == 0 && mPaddings[1] == 0) {
         if(mConv1x1Opt){
             
@@ -479,6 +483,10 @@ public:
     virtual ~ConvolutionCreator() = default;
     virtual Execution *onCreate(const std::vector<Tensor *> &inputs, const std::vector<Tensor *> &outputs,
                                 const MNN::Op *op, Backend *backend) const override {
+        if (inputs.size() == 3) {
+            return new MultiInputConvExecution(op, backend);
+        }
+        
         auto conv2D = op->main_as_Convolution2D();
         if (ConvWinograd::valid(conv2D->common(), inputs[0])) {
             return new ConvWinograd(conv2D, backend);

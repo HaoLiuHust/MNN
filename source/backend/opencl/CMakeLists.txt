@@ -25,10 +25,12 @@ target_include_directories(MNN_CL PRIVATE
     ${PROJECT_SOURCE_DIR}/3rd_party/half
 )
 
+#add_definitions(-DLOG_VERBOSE)
+#add_definitions(-DMNN_OPEN_TIME_TRACE)
+#add_definitions(-DENABLE_OPENCL_TIME_PROFILER)
+
 if (${CMAKE_SYSTEM_NAME} MATCHES "Android")
     add_definitions(-DMNN_USE_OPENCL_WRAPPER)
-    #add_definitions(-DENABLE_OPENCL_TURNING_PROFILER)
-    #add_definitions(-DLOG_VERBOSE)
 else()
     find_package(OpenCL)
     target_link_libraries(MNN_CL PRIVATE ${OpenCL_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})

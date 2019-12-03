@@ -102,6 +102,11 @@ public:
     bool isCreateError() const;
 
 private:
+    void copyFromDevice(const Tensor* srcTensor, const Tensor* dstTensor) const;
+    void copyToDevice(const Tensor* srcTensor, const Tensor* dstTensor) const;
+    void copyFromDeviceInt8(const Tensor* srcTensor, const Tensor* dstTensor) const;
+    void copyToDeviceInt8(const Tensor* srcTensor, const Tensor* dstTensor) const;
+
     void _allocHostBuffer(int length) const;
     cl::Kernel mImageToNCHWBufferFloat;
     cl::Kernel mImageToNC4HW4BufferFloat;
