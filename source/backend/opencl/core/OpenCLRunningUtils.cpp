@@ -225,59 +225,59 @@ void run3DKernelDefault(const ::cl::Kernel &kernel, const std::vector<uint32_t> 
 #endif
 }
 
-//void runKernel2D(const ::cl::Kernel &kernel, const std::vector<uint32_t> &gws, const std::vector<uint32_t> &lws,
-//                 OpenCLRuntime *runtime,  cl::Event* eventPtr) {
-//#ifdef LOG_VERBOSE
-//    MNN_PRINT("start run3DKernelDefault !\n");
-//#endif
-//
-//    std::vector<uint32_t> internalGlobalWS = gws;
-//    for (size_t i = 0; i < 2; ++i) {
-//        internalGlobalWS[i] = ROUND_UP(gws[i], std::max((uint32_t)1, lws[i]));
-//    }
-//
-//    cl_int error = CL_SUCCESS;
-//
-//	cl::Event event;
-//	
-////    if(eventPtr == nullptr){
-////        error        = runtime->commandQueue().enqueueNDRangeKernel(
-////            kernel, cl::NullRange, cl::NDRange(internalGlobalWS[0], internalGlobalWS[1]), cl::NDRange(lws[0], lws[1]));
-////
-////    }else{
-//        error        = runtime->commandQueue().enqueueNDRangeKernel(
-//            kernel, cl::NullRange, cl::NDRange(internalGlobalWS[0], internalGlobalWS[1]), cl::NDRange(lws[0], lws[1]), nullptr, &event);
-//   // }
-//
-//   WaitForQueueExecution(event);
-//   
-//    MNN_CHECK_CL_SUCCESS(error);
-//
-//#ifdef LOG_VERBOSE
-//    MNN_PRINT("end run3DKernelDefault !\n");
-//#endif
-//}
+void runKernel2D(const ::cl::Kernel &kernel, const std::vector<uint32_t> &gws, const std::vector<uint32_t> &lws,
+                 OpenCLRuntime *runtime,  cl::Event* eventPtr) {
+#ifdef LOG_VERBOSE
+    MNN_PRINT("start run3DKernelDefault !\n");
+#endif
 
- void runKernel2D(const cl::Kernel &kernel, const std::vector<uint32_t> &gws, const std::vector<uint32_t> &lws,
-						 OpenCLRuntime *runtime, cl::Event* eventPtr) {
-	 cl::Event event;
-	 const std::vector<uint32_t> &params = lws;
-	 MNN_ASSERT(params.size() == 2);
-	 std::vector<uint32_t> internalGlobalWS(gws.data(), gws.data() + 2);
-	 for (size_t i = 0; i < 2; ++i) {
-		 internalGlobalWS[i] = ROUND_UP(gws[i], std::max((uint32_t)1, params[i]));
-	 }
- 
-	 uint32_t block_size	   = 4;
-	 const uint32_t num_blocks = UP_DIV(internalGlobalWS[1], block_size);
-	 for (uint32_t i = 0; i < num_blocks; ++i) {
-		 uint32_t gws1 = block_size;
-		 MNN_CHECK_CL_SUCCESS(runtime->commandQueue().enqueueNDRangeKernel(
-			 kernel, cl::NDRange(0, i * block_size), cl::NDRange(internalGlobalWS[0], gws1),
-			 cl::NDRange(params[0], params[1]), nullptr, &event));
-		 WaitForQueueExecution(event);			 
-	 }
- }
+    std::vector<uint32_t> internalGlobalWS = gws;
+    for (size_t i = 0; i < 2; ++i) {
+        internalGlobalWS[i] = ROUND_UP(gws[i], std::max((uint32_t)1, lws[i]));
+    }
+
+    cl_int error = CL_SUCCESS;
+
+	cl::Event event;
+	
+//    if(eventPtr == nullptr){
+//        error        = runtime->commandQueue().enqueueNDRangeKernel(
+//            kernel, cl::NullRange, cl::NDRange(internalGlobalWS[0], internalGlobalWS[1]), cl::NDRange(lws[0], lws[1]));
+//
+//    }else{
+        error        = runtime->commandQueue().enqueueNDRangeKernel(
+            kernel, cl::NullRange, cl::NDRange(internalGlobalWS[0], internalGlobalWS[1]), cl::NDRange(lws[0], lws[1]), nullptr, &event);
+   // }
+
+   WaitForQueueExecution(event);
+   
+    MNN_CHECK_CL_SUCCESS(error);
+
+#ifdef LOG_VERBOSE
+    MNN_PRINT("end run3DKernelDefault !\n");
+#endif
+}
+
+// void runKernel2D(const cl::Kernel &kernel, const std::vector<uint32_t> &gws, const std::vector<uint32_t> &lws,
+//						 OpenCLRuntime *runtime, cl::Event* eventPtr) {
+//	 cl::Event event;
+//	 const std::vector<uint32_t> &params = lws;
+//	 MNN_ASSERT(params.size() == 2);
+//	 std::vector<uint32_t> internalGlobalWS(gws.data(), gws.data() + 2);
+//	 for (size_t i = 0; i < 2; ++i) {
+//		 internalGlobalWS[i] = ROUND_UP(gws[i], std::max((uint32_t)1, params[i]));
+//	 }
+// 
+//	 uint32_t block_size	   = 4;
+//	 const uint32_t num_blocks = UP_DIV(internalGlobalWS[1], block_size);
+//	 for (uint32_t i = 0; i < num_blocks; ++i) {
+//		 uint32_t gws1 = block_size;
+//		 MNN_CHECK_CL_SUCCESS(runtime->commandQueue().enqueueNDRangeKernel(
+//			 kernel, cl::NDRange(0, i * block_size), cl::NDRange(internalGlobalWS[0], gws1),
+//			 cl::NDRange(params[0], params[1]), nullptr, &event));
+//		 WaitForQueueExecution(event);			 
+//	 }
+// }
 
 
 void run2DKernelDefault(const cl::Kernel &kernel, const uint32_t *gws, const std::vector<uint32_t> &lws,
