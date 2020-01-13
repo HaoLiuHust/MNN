@@ -7,8 +7,8 @@
 //
 
 #include <vector>
-#include "PoolGradExecution.hpp"
-#include "TensorUtils.hpp"
+#include "backend/opencl/execution/PoolGradExecution.hpp"
+#include "core/TensorUtils.hpp"
 
 namespace MNN {
 namespace OpenCL {
@@ -29,7 +29,7 @@ ErrorCode PoolGradExecution::onResize(const std::vector<Tensor *> &inputs, const
     MNN_ASSERT(mType == PoolType_MAXPOOL || mType == PoolType_AVEPOOL);
     mUnits.clear();
     mUnits.resize(1);
-    
+
     auto shape = tensorShapeFormat(inputs[0]);
     auto poolShape = tensorShapeFormat(inputs[1]);
     uint32_t imageHeight = shape[0] * shape[1];
@@ -62,7 +62,7 @@ ErrorCode PoolGradExecution::onResize(const std::vector<Tensor *> &inputs, const
     mUnits[0].kernel = kernel;
     mUnits[0].localWorkSize = cl::NullRange;
     mUnits[0].globalWorkSize = {imageHeight, imageWidth};
-    
+
     return NO_ERROR;
 }
 
@@ -73,8 +73,8 @@ public:
         return new PoolGradExecution(op, backend);
     }
 };
-    
+
 OpenCLCreatorRegister<PoolGradCreator> __Pool_grad_op(OpType_PoolGrad);
-    
+
 }
 }

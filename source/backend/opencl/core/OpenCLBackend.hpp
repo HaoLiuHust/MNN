@@ -9,17 +9,17 @@
 #ifndef OpenCLBackend_hpp
 #define OpenCLBackend_hpp
 
-#include "Backend.hpp"
+#include "core/Backend.hpp"
 #include "MNN_generated.h"
 
 #include <list>
 #include <vector>
-#include "BufferPool.hpp"
-#include "ImageBufferConvertor.hpp"
-#include "ImagePool.hpp"
-#include "Macro.h"
-#include "core/ImageBufferConvertor.hpp"
-#include "core/OpenCLRunningUtils.hpp"
+#include "backend/opencl/core/BufferPool.hpp"
+#include "backend/opencl/core/ImageBufferConvertor.hpp"
+#include "backend/opencl/core/ImagePool.hpp"
+#include "core/Macro.h"
+#include "backend/opencl/core/ImageBufferConvertor.hpp"
+#include "backend/opencl/core/OpenCLRunningUtils.hpp"
 
 namespace MNN {
 namespace OpenCL {

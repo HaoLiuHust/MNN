@@ -10,8 +10,9 @@ def convert_string_to_hex_list(code_str):
     return hex_list
 
 def opencl_codegen():
-    cl_kernel_dir = "./"
-    output_path = "./codegen/opencl_program.cc"
+    cl_kernel_dir = sys.argv[1]
+    output_path = sys.argv[2]
+    print("Generating OpenCL Kernels in "+cl_kernel_dir+" to "+output_path)
     if not os.path.exists(cl_kernel_dir):
         print(cl_kernel_dir + " doesn't exist!")
 
@@ -81,4 +82,3 @@ def opencl_codegen():
 
 if __name__ == '__main__':
     opencl_codegen()
-

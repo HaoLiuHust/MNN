@@ -10,8 +10,8 @@
 #define ConvertExecution_hpp
 
 #include <vector>
-#include "Execution.hpp"
-#include "core/OpenCLBackend.hpp"
+#include "core/Execution.hpp"
+#include "backend/opencl/core/OpenCLBackend.hpp"
 
 namespace MNN {
     namespace OpenCL {

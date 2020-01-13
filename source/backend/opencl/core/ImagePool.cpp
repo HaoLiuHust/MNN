@@ -6,7 +6,7 @@
 //  Copyright © 2018, Alibaba Group Holding Limited
 //
 
-#include "ImagePool.hpp"
+#include "backend/opencl/core/ImagePool.hpp"
 namespace MNN {
 namespace OpenCL {
 cl::Image* ImagePool::alloc(int w, int h, bool seperate) {

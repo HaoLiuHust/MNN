@@ -6,11 +6,11 @@
 //  Copyright © 2018, Alibaba Group Holding Limited
 //
 
-#include "core/OpenCLRunningUtils.hpp"
+#include "backend/opencl/core/OpenCLRunningUtils.hpp"
 #include <algorithm>
 #include <string>
 #include <vector>
-#include "Macro.h"
+#include "core/Macro.h"
 
 namespace MNN {
 namespace OpenCL {
@@ -251,6 +251,10 @@ void runKernel2D(const ::cl::Kernel &kernel, const std::vector<uint32_t> &gws, c
 
    WaitForQueueExecution(event);
    
+    }else{
+        error        = runtime->commandQueue().enqueueNDRangeKernel(
+            kernel, cl::NullRange, cl::NDRange(internalGlobalWS[0], internalGlobalWS[1]), cl::NDRange(lws[0], lws[1]), nullptr, eventPtr);
+    }
     MNN_CHECK_CL_SUCCESS(error);
 
 #ifdef LOG_VERBOSE

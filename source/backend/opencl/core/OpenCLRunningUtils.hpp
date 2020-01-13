@@ -13,10 +13,10 @@
 #include <vector>
 #include <algorithm>
 
-#include "Macro.h"
-#include "TensorUtils.hpp"
-#include "core/runtime/OpenCLRuntime.hpp"
-#include "core/runtime/OpenCLWrapper.hpp"
+#include "core/Macro.h"
+#include "core/TensorUtils.hpp"
+#include "backend/opencl/core/runtime/OpenCLRuntime.hpp"
+#include "backend/opencl/core/runtime/OpenCLWrapper.hpp"
 
 namespace MNN {
 namespace OpenCL {

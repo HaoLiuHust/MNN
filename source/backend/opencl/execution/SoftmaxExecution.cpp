@@ -6,8 +6,8 @@
 //  Copyright © 2018, Alibaba Group Holding Limited
 //
 
-#include "execution/SoftmaxExecution.hpp"
-#include <Macro.h>
+#include "backend/opencl/execution/SoftmaxExecution.hpp"
+#include "core/Macro.h"
 
 namespace MNN {
 namespace OpenCL {
@@ -101,15 +101,15 @@ bool SoftmaxExecution::buildSoftmaxKernel() {
 ErrorCode SoftmaxExecution::onResize(const std::vector<Tensor *> &inputs, const std::vector<Tensor *> &outputs) {
     Tensor *input  = inputs[0];
     Tensor *output = outputs[0];
-    
+
     std::vector<int> inputShape  = tensorShapeFormat(input);
     std::vector<int> outputShape = tensorShapeFormat(output);
-    
+
     const int outputBatch    = outputShape.at(0);
     const int outputHeight   = outputShape.at(1);
     const int outputWidth    = outputShape.at(2);
     const int outputChannels = outputShape.at(3);
-    
+
     const int channelBlocks  = UP_DIV(outputChannels, 4);
     const int remainChannels = channelBlocks * 4 - outputChannels;
     if (1 == mAxis) {
@@ -119,7 +119,7 @@ ErrorCode SoftmaxExecution::onResize(const std::vector<Tensor *> &inputs, const 
         mKernel.setArg(idx++, mGlobalWorkSize[0]);
         mKernel.setArg(idx++, mGlobalWorkSize[1]);
         mKernel.setArg(idx++, mGlobalWorkSize[2]);
-        
+
         mKernel.setArg(idx++, openCLImage(input));
         mKernel.setArg(idx++, openCLImage(output));
         mKernel.setArg(idx++, static_cast<int>(outputChannels));
@@ -139,7 +139,7 @@ ErrorCode SoftmaxExecution::onResize(const std::vector<Tensor *> &inputs, const 
         mKernel.setArg(1, openCLImage(output));
         mKernel.setArg(2, shape);
     }
-    
+
     return NO_ERROR;
 }
 
@@ -171,7 +171,7 @@ public:
             if (axis < 0) {
                 axis = inputs[0]->dimensions() + axis;
             }
-            
+
             axis = index[axis];
             //1 : channel //2 : height
             if (1 == axis || 2 == axis) {
@@ -183,7 +183,7 @@ public:
             if (axis < 0) {
                 axis = inputs[0]->dimensions() + axis;
             }
-            
+
             if (1 == axis || 2 == axis) {
                 return new SoftmaxExecution(inputs, axis, backend);
             }

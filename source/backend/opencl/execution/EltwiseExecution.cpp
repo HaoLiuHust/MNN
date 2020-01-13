@@ -6,11 +6,11 @@
 //  Copyright © 2018, Alibaba Group Holding Limited
 //
 
-#include "EltwiseExecution.hpp"
+#include "backend/opencl/execution/EltwiseExecution.hpp"
 
-#include <Macro.h>
+#include "core/Macro.h"
 #include <string.h>
-#include "TensorUtils.hpp"
+#include "core/TensorUtils.hpp"
 
 namespace MNN {
 namespace OpenCL {

@@ -10,7 +10,7 @@
 #define PoolGradExecution_hpp
 
 #include <vector>
-#include "CommonExecution.hpp"
+#include "backend/opencl/execution/CommonExecution.hpp"
 namespace MNN {
 namespace OpenCL {
 

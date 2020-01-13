@@ -7,7 +7,7 @@
 //
 
 
-#include "MatmulExecution.hpp"
+#include "backend/opencl/execution/MatmulExecution.hpp"
 
 namespace MNN {
 namespace OpenCL {
@@ -28,7 +28,7 @@ ErrorCode MatMulExecution::onResize(const std::vector<Tensor *> &inputs, const s
         mKernel           = runtime->buildKernel("matmul", kernelName, buildOptions);
         mMaxWorkGroupSize = static_cast<uint32_t>(runtime->getMaxWorkGroupSize(mKernel));
     }
-    
+
     Tensor *input0 = inputs[0];
     Tensor *input1 = inputs[1];
     Tensor *output = outputs[0];

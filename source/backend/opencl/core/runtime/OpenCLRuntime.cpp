@@ -6,7 +6,7 @@
 //  Copyright © 2018, Alibaba Group Holding Limited
 //
 
-#include "core/runtime/OpenCLRuntime.hpp"
+#include "backend/opencl/core/runtime/OpenCLRuntime.hpp"
 #include <sys/stat.h>
 #include <cstdlib>
 #include <fstream>
@@ -14,9 +14,9 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include "Macro.h"
+#include "core/Macro.h"
 //#define MNN_OPEN_TIME_TRACE
-#include "AutoTime.hpp"
+#include <MNN/AutoTime.hpp>
 namespace MNN {
 
 extern const std::map<std::string, std::vector<unsigned char>> OpenCLProgramMap;

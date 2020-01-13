@@ -72,18 +72,17 @@ __kernel void deconv_2d(GLOBAL_SIZE_3_DIMS __read_only image2d_t input, __read_o
                 in_width0++;
             }
         }
-
+    }
 #ifdef RELU
-        out0 = fmax(out0, (FLOAT4)0);
+    out0 = fmax(out0, (FLOAT4)0);
 #endif
 
 #ifdef RELU6
-        out0 = clamp(out0, (FLOAT4)0, (FLOAT4)6);
+    out0 = clamp(out0, (FLOAT4)0, (FLOAT4)6);
 #endif
 
-        int out_image_width_idx = mad24(out_channel_blocks_idx, output_shape.y, out_w_idx);
-        WI_F(output, (int2)(out_image_width_idx, out_batch_height_idx), out0);
-    }
+    int out_image_width_idx = mad24(out_channel_blocks_idx, output_shape.y, out_w_idx);
+    WI_F(output, (int2)(out_image_width_idx, out_batch_height_idx), out0);
 }
 
 __kernel void iohw2oihw(__global const float* input_ptr, __global float* output_ptr, int plane_number, int input_channel, int output_channel) {
@@ -94,6 +93,7 @@ __kernel void iohw2oihw(__global const float* input_ptr, __global float* output_
     const int input_offset = (ic_index * output_channel + oc_index) * plane_number;
     const int output_offset = (oc_index * input_channel + ic_index) * plane_number;
     for (int i = 0; i < plane_number; ++i) {
+        output_ptr[output_offset + i] = input_ptr[input_offset + i];
         output_ptr[output_offset + i] = input_ptr[input_offset + i];
     }
 }

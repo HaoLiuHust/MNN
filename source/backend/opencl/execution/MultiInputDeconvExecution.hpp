@@ -9,7 +9,7 @@
 #ifndef MultiInputDeconvExecution_hpp
 #define MultiInputDeconvExecution_hpp
 
-#include "CommonExecution.hpp"
+#include "backend/opencl/execution/CommonExecution.hpp"
 namespace MNN {
 namespace OpenCL {
 

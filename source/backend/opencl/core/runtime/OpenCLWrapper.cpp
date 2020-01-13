@@ -7,7 +7,7 @@
 //
 
 #ifdef MNN_USE_OPENCL_WRAPPER
-#include "core/runtime/OpenCLWrapper.hpp"
+#include "backend/opencl/core/runtime/OpenCLWrapper.hpp"
 #include <dlfcn.h>
 #include <memory>
 #include <string>

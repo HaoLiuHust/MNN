@@ -6,7 +6,7 @@
 //  Copyright © 2018, Alibaba Group Holding Limited
 //
 
-#include "execution/ConcatExecution.hpp"
+#include "backend/opencl/execution/ConcatExecution.hpp"
 
 namespace MNN {
 namespace OpenCL {
@@ -155,7 +155,7 @@ public:
             }
             return nullptr;
         }
-        
+
         if (1 == axis) {
             for (int i = 0; i < inputs.size() - 1; ++i) {
                 if (inputs[i]->channel() % 4 != 0) {

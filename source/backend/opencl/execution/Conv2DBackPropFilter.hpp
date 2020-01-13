@@ -9,7 +9,7 @@
 #ifndef Conv2DBackPropFilter_hpp
 #define Conv2DBackPropFilter_hpp
 
-#include "CommonExecution.hpp"
+#include "backend/opencl/execution/CommonExecution.hpp"
 
 namespace MNN {
 namespace OpenCL {
@@ -18,9 +18,9 @@ class Conv2DBackPropFilter : public CommonExecution {
 public:
     Conv2DBackPropFilter(const MNN::Op *op, Backend *backend);
     virtual ~Conv2DBackPropFilter();
-    
+
     virtual ErrorCode onResize(const std::vector<Tensor *> &inputs, const std::vector<Tensor *> &outputs) override;
-    
+
 private:
     std::vector<int> mStrides;
     std::vector<int> mPaddings;

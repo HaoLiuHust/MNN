@@ -6,15 +6,15 @@
 //  Copyright © 2018, Alibaba Group Holding Limited
 //
 
-#include "core/OpenCLBackend.hpp"
+#include "backend/opencl/core/OpenCLBackend.hpp"
 #include "MNN_generated.h"
 
-#include "TensorUtils.hpp"
-#include "SizeComputer.hpp"
+#include "core/TensorUtils.hpp"
+#include "core/SizeComputer.hpp"
 #include <map>
 #include <mutex>
 #include <thread>
-#include "Macro.h"
+#include "core/Macro.h"
 #include "AutoTime.hpp"
 
 namespace MNN {
@@ -127,7 +127,7 @@ bool OpenCLBackend::onAcquireBuffer(const Tensor* nativeTensor, StorageType stor
 
 bool OpenCLBackend::onReleaseBuffer(const Tensor* nativeTensor, StorageType storageType) {
     if(nativeTensor->getType().code == halide_type_int && nativeTensor->getType().bits == 8){
- 
+
         return true;
     }
     if (storageType == DYNAMIC_SEPERATE) {
@@ -348,6 +348,7 @@ void OpenCLBackend::onCopyBuffer(const Tensor* srcTensor, const Tensor* dstTenso
 }
 
 
+
 bool OpenCLBackend::addCreator(OpType t, Creator* c) {
     auto map = gCreator();
     if (map->find(t) != map->end()) {
@@ -386,7 +387,7 @@ public:
                 delete backend;
             }
         }
-        return nullptr;    
+        return nullptr;
     }
 };
 

@@ -9,12 +9,13 @@
 #ifndef ReductionExecution_hpp
 #define ReductionExecution_hpp
 
-#include "CommonExecution.hpp"
+#include "core/Execution.hpp"
 #include <MNN_generated.h>
 #include <vector>
 #include <string.h>
 #include <unordered_set>
-#include "core/OpenCLBackend.hpp"
+#include "backend/opencl/core/OpenCLBackend.hpp"
+#include "backend/opencl/execution/CommonExecution.hpp"
 
 namespace MNN {
 namespace OpenCL {
