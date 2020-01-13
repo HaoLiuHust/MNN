@@ -6,9 +6,9 @@
 //  Copyright © 2018, Alibaba Group Holding Limited
 //
 
-#include "ReductionExecution.hpp"
-#include <Macro.h>
-#include "TensorUtils.hpp"
+#include "backend/opencl/execution/ReductionExecution.hpp"
+#include "core/Macro.h"
+#include "core/TensorUtils.hpp"
 
 namespace MNN {
 namespace OpenCL {
@@ -72,7 +72,7 @@ ErrorCode ReductionExecution::generateReductionGWSLWS(const std::vector<uint32_t
         }
     }
     mLocalWorkSize = {mGlobalWorkSize[0], mGlobalWorkSize[1], 1};
-    
+
     return NO_ERROR;
 }
 

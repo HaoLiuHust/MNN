@@ -7,8 +7,8 @@
 //
 
 #include <map>
-#include "TrainableParamExecution.hpp"
-#include "TensorUtils.hpp"
+#include "backend/opencl/execution/TrainableParamExecution.hpp"
+#include "core/TensorUtils.hpp"
 
 namespace MNN {
 namespace OpenCL {
@@ -27,11 +27,11 @@ ErrorCode TrainableParamExecution::onResize(const std::vector<Tensor *> &inputs,
         return NO_ERROR;
     }
     mInitialized = true;
-    
+
     auto output = outputs[0];
     const int blobSize = output->elementSize();
     const float* blobData = mOp->main_as_Blob()->float32s()->data();
-    
+
     auto openclBackend = static_cast<OpenCLBackend *>(backend());
     auto runtime = openclBackend->getOpenCLRuntime();
     cl::Buffer buffer(runtime->context(), CL_MEM_READ_ONLY | CL_MEM_ALLOC_HOST_PTR, blobSize * sizeof(float));
@@ -44,7 +44,7 @@ ErrorCode TrainableParamExecution::onResize(const std::vector<Tensor *> &inputs,
         return OUT_OF_MEMORY;
     }
     runtime->commandQueue().enqueueUnmapMemObject(buffer, bufferPtr);
-    
+
     auto format = TensorUtils::getDescribe(output)->dimensionFormat;
     if (format != MNN_DATA_FORMAT_NCHW && format != MNN_DATA_FORMAT_NHWC) {
         MNN_ERROR("Variable's blob dataFormat should be MNN_DATA_FORMAT_NCHW or MNN_DATA_FORMAT_NHWC\n");
@@ -61,7 +61,7 @@ ErrorCode TrainableParamExecution::onResize(const std::vector<Tensor *> &inputs,
         bufferTensor->buffer().device = (uint64_t)(&buffer);
         convertor.convertBufferToImage(bufferTensor.get(), MNN::OpenCL::NHWC_BUFFER, output, true);
     }
-    
+
     return NO_ERROR;
 }
 

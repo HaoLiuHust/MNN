@@ -6,8 +6,8 @@
 //  Copyright © 2018, Alibaba Group Holding Limited
 //
 
-#include "SoftmaxGradExecution.hpp"
-#include "TensorUtils.hpp"
+#include "backend/opencl/execution/SoftmaxGradExecution.hpp"
+#include "core/TensorUtils.hpp"
 
 namespace MNN {
 namespace OpenCL {
@@ -55,7 +55,7 @@ SoftmaxGradExecution::~SoftmaxGradExecution() {
 ErrorCode SoftmaxGradExecution::onResize(const std::vector<Tensor *> &inputs, const std::vector<Tensor *> &outputs) {
     mUnits.clear();
     mUnits.resize(1);
-    
+
     auto output = outputs[0];
     auto shape = openclTensorShape(output);
     int axis = mAxis;
@@ -109,7 +109,7 @@ ErrorCode SoftmaxGradExecution::onResize(const std::vector<Tensor *> &inputs, co
         static_cast<uint32_t>(remain),
         static_cast<uint32_t>(step)
     };
-    
+
     return NO_ERROR;
 }
 
@@ -124,7 +124,7 @@ public:
         return new SoftmaxGradExecution(backend, axis);
     }
 };
-    
+
 OpenCLCreatorRegister<SoftmaxGradCreator> __Softmax_grad_op(OpType_SoftmaxGrad);
 }
 }

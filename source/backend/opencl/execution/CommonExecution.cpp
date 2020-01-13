@@ -6,7 +6,7 @@
 //  Copyright © 2018, Alibaba Group Holding Limited
 //
 
-#include "CommonExecution.hpp"
+#include "backend/opencl/execution/CommonExecution.hpp"
 namespace MNN {
 namespace OpenCL {
 

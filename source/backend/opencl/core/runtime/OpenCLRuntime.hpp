@@ -20,9 +20,9 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "Macro.h"
+#include "core/Macro.h"
 #include "Type_generated.h"
-#include "core/runtime/OpenCLWrapper.hpp"
+#include "backend/opencl/core/runtime/OpenCLWrapper.hpp"
 
 namespace MNN {
 
@@ -95,7 +95,7 @@ private:
     GpuType mGpuType;
     std::string mDefaultBuildParams;
     float mFlops = 4.0f;
-    bool mIsCreateError{false}; 
+    bool mIsCreateError{false};
 
     double mStartNanos;
     double mStopNanos;

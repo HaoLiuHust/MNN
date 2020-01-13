@@ -6,7 +6,7 @@
 //  Copyright © 2018, Alibaba Group Holding Limited
 //
 
-#include "ImageBufferConvertor.hpp"
+#include "backend/opencl/core/ImageBufferConvertor.hpp"
 
 namespace MNN {
 namespace OpenCL {
@@ -375,14 +375,14 @@ bool ImageBufferConvertor::convertBufferToImage(const Tensor *buffer, const Open
         const int channelHeightWidthSumSize =
             buffer->buffer().dim[1].extent * buffer->buffer().dim[2].extent * buffer->buffer().dim[3].extent;
         const int heightWidthSumSize = buffer->buffer().dim[2].extent * buffer->buffer().dim[3].extent;
-        int kernelShape[2] = {buffer->buffer().dim[2].extent, buffer->buffer().dim[3].extent}; 
+        int kernelShape[2] = {buffer->buffer().dim[2].extent, buffer->buffer().dim[3].extent};
         mBufferToImageKernel.setArg(idx++, static_cast<uint32_t>(buffer->buffer().dim[0].extent));
         mBufferToImageKernel.setArg(idx++, sizeof(kernelShape),kernelShape);
         mBufferToImageKernel.setArg(idx++, static_cast<uint32_t>(channelHeightWidthSumSize));
         mBufferToImageKernel.setArg(idx++, static_cast<uint32_t>(heightWidthSumSize));
     } else if (type == DW_CONV2D_FILTER) {
         const int heightWidthSumSize = buffer->buffer().dim[2].extent * buffer->buffer().dim[3].extent;
-        int kernelShape[4] = {buffer->buffer().dim[0].extent, buffer->buffer().dim[1].extent, buffer->buffer().dim[2].extent, buffer->buffer().dim[3].extent};  
+        int kernelShape[4] = {buffer->buffer().dim[0].extent, buffer->buffer().dim[1].extent, buffer->buffer().dim[2].extent, buffer->buffer().dim[3].extent};
         mBufferToImageKernel.setArg(idx++, sizeof(kernelShape),kernelShape);
         mBufferToImageKernel.setArg(idx++, static_cast<uint32_t>(heightWidthSumSize));
     } else if (type == ARGUMENT) {
@@ -391,7 +391,7 @@ bool ImageBufferConvertor::convertBufferToImage(const Tensor *buffer, const Open
         const int channelHeightWidthSumSize =
             buffer->buffer().dim[1].extent * buffer->buffer().dim[2].extent * buffer->buffer().dim[3].extent;
         const int heightWidthSumSize = buffer->buffer().dim[2].extent * buffer->buffer().dim[3].extent;
-        int kernelShape[2] = {buffer->buffer().dim[2].extent, buffer->buffer().dim[3].extent}; 
+        int kernelShape[2] = {buffer->buffer().dim[2].extent, buffer->buffer().dim[3].extent};
         mBufferToImageKernel.setArg(idx++, static_cast<uint32_t>(buffer->buffer().dim[1].extent));
         mBufferToImageKernel.setArg(idx++, sizeof(kernelShape),kernelShape);
         mBufferToImageKernel.setArg(idx++, static_cast<uint32_t>(channelHeightWidthSumSize));

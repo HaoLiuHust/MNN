@@ -11,7 +11,7 @@
 
 
 #include <memory>
-#include "Macro.h"
+#include "core/Macro.h"
 #define CL_TARGET_OPENCL_VERSION 200
 #define CL_HPP_TARGET_OPENCL_VERSION 110
 #define CL_HPP_MINIMUM_OPENCL_VERSION 110

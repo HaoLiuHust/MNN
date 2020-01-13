@@ -7,8 +7,8 @@
 //
 
 #include <array>
-#include "execution/ZerosLikeExecution.hpp"
-
+#include "backend/opencl/execution/ZerosLikeExecution.hpp"
+#include "MNN_generated.h"
 namespace MNN {
 namespace OpenCL {
 

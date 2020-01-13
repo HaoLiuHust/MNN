@@ -9,7 +9,7 @@
 #ifndef SoftmaxGradExecution_hpp
 #define SoftmaxGradExecution_hpp
 
-#include "CommonExecution.hpp"
+#include "backend/opencl/execution/CommonExecution.hpp"
 namespace MNN {
 namespace OpenCL {
 

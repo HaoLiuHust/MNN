@@ -9,11 +9,9 @@
 #ifndef MatMulExecution_hpp
 #define MatMulExecution_hpp
 
-#include "Execution.hpp"
-#include "core/OpenCLBackend.hpp"
-#include "Execution.hpp"
-#include "core/OpenCLBackend.hpp"
-#include "core/OpenCLRunningUtils.hpp"
+#include "core/Execution.hpp"
+#include "backend/opencl/core/OpenCLBackend.hpp"
+#include "backend/opencl/core/OpenCLRunningUtils.hpp"
 
 namespace MNN {
 namespace OpenCL {
@@ -40,4 +38,4 @@ private:
 } // namespace OpenCL
 } // namespace MNN
 
-#endif 
+#endif

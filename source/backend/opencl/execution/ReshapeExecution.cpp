@@ -6,9 +6,9 @@
 //  Copyright © 2018, Alibaba Group Holding Limited
 //
 
-#include "ReshapeExecution.hpp"
-#include <Macro.h>
-#include "TensorUtils.hpp"
+#include "backend/opencl/execution/ReshapeExecution.hpp"
+#include "core/Macro.h"
+#include "core/TensorUtils.hpp"
 #include <map>
 #include <string>
 
